@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useParser } from '../hooks/useParser';
+
 import Row from './components/Row';
 
 function App() {
-  const {parsedData, parse} = useParser()
+  const { parsedData, parse } = useParser()
   const [data, setData] = useState<string>()
 
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -12,13 +13,10 @@ function App() {
   const handleOpenFilePicker = () => fileInputRef.current?.click()
 
   const handleAddNewRow = () => {
-    mainBlockRef.current?.scrollTo(0, mainBlockRef.current?.scrollHeight)
-
     const updateData = data?.split("\n")
-
     updateData?.push('NewItem, 0, NewItem, 0')
 
-    setData(updateData?.join('\n'))
+    setData(updateData?.join('\n')) 
   }
 
   const handleAddToClipboard = () => data && navigator.clipboard.writeText(data)
@@ -26,6 +24,10 @@ function App() {
   useEffect(() => {
     parsedData && setData(parsedData);
   }, [parsedData]);
+
+  useEffect(() => {
+    mainBlockRef.current?.scrollTo(0, mainBlockRef.current?.scrollHeight)
+  }, [data])
 
   return (
     <div className='flex flex-col gap-y-4 p-4 h-screen items-center text-white bg-[#0d1017] overflow-hidden'>
@@ -38,8 +40,9 @@ function App() {
         </div>
       </div>
       <div ref={mainBlockRef} className='w-3/4 overflow-y-scroll scrollbar-hide'>
-        {data ? data.split('\n').map((item, index) => 
-          item.includes(' ') && !item.includes('[') && !item.includes('#') && <Row key={item + index} data={data} order={index} mutate={setData}>{item}</Row>)
+        {data 
+          ? data.split('\n').map((item, index) => 
+            item.includes(' ') && !item.includes('[') && !item.includes('#') && <Row key={item + index} data={data} order={index} mutate={setData}>{item}</Row>)
           : <p className='text-white text-center'>None.</p>}
       </div>
     </div>

@@ -5,10 +5,12 @@ export const useParser = () => {
 
   const parse = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
+
     if (file) {
       const reader = new FileReader()
       reader.onload = event => {
         const parsedData = event.target?.result as string
+        
         setParsedData(parsedData)
       }
   

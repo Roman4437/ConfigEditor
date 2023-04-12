@@ -35,9 +35,11 @@ function App() {
       item !== '\r' && !item.includes('[') && !item.includes('#') && rows.push({ item,  order }))
 
     setRows(rows)
-
-    setActivePage(Math.ceil(rows.length / ITEMS_ON_PAGE) - 1)
   }, [data])
+
+  useEffect(() => {
+    rows && setActivePage(Math.ceil(rows.length / ITEMS_ON_PAGE) - 1)
+  }, [rows && Math.ceil(rows.length / ITEMS_ON_PAGE)])
 
   return (
     <div className='flex flex-col gap-y-4 p-4 h-screen items-center text-white bg-[#0d1017] overflow-hidden'>
